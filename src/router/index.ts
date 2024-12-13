@@ -13,45 +13,61 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => Promise.resolve(Home)
     },
     {
       path: '/menu',
       name: 'menu',
-      component: Menu
+      component: () => Promise.resolve(Menu)
     },
     {
       path: '/about',
       name: 'about',
-      component: About
+      component: () => Promise.resolve(About)
     },
     {
       path: '/how-to-order',
       name: 'how-to-order',
-      component: HowToOrder
+      component: () => Promise.resolve(HowToOrder)
     },
     {
       path: '/contact',
       name: 'contact',
-      component: Contact
+      component: () => Promise.resolve(Contact)
     },
     {
       path: '/checkout',
       name: 'checkout',
-      component: Checkout
+      component: () => Promise.resolve(Checkout)
     },
     {
       path: '/cart',
       name: 'cart',
-      component: Cart
+      component: () => Promise.resolve(Cart)
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition
+    } else {
+      return { top: 0 }
     }
-    return { top: 0 }
   }
+})
+
+// Add global navigation guard
+router.beforeEach((to, from, next) => {
+  next()
+})
+
+// Add error handling
+router.onError((error) => {
+  console.error('Router error:', error)
+  router.push('/')
 })
 
 export default router
